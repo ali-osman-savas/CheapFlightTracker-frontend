@@ -1,0 +1,19 @@
+<p-card 
+  [header]="header"
+  [subheader]="subheader"
+  [styleClass]="styleClass"
+>
+  <ng-template pTemplate="header" *ngIf="headerTemplate">
+    <ng-container *ngTemplateOutlet="headerTemplate"></ng-container>
+  </ng-template>
+  
+  <ng-template pTemplate="content" *ngIf="contentTemplate">
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+  </ng-template>
+  
+  <ng-template pTemplate="footer" *ngIf="footerTemplate">
+    <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
+  </ng-template>
+  
+  <ng-content></ng-content>
+</p-card>

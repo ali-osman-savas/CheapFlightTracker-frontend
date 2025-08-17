@@ -1,0 +1,110 @@
+<div class="register-container">
+  <app-card header="Kayıt Ol" styleClass="register-card">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="fullName">Ad Soyad</label>
+        <app-input-text 
+          id="fullName"
+          type="text" 
+          formControlName="fullName"
+          placeholder="Ad soyadınızı girin"
+          styleClass="w-full"
+          [class.ng-invalid]="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
+        />
+        <small 
+          class="p-error" 
+          *ngIf="registerForm.get('fullName')?.invalid && registerForm.get('fullName')?.touched"
+        >
+          Ad soyad gereklidir
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <app-input-text 
+          id="email"
+          type="email" 
+          formControlName="email"
+          placeholder="Email adresinizi girin"
+          styleClass="w-full"
+          [class.ng-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        />
+        <small 
+          class="p-error" 
+          *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
+        >
+          Geçerli bir email adresi girin
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="phone">Telefon (Opsiyonel)</label>
+        <app-input-text 
+          id="phone"
+          type="tel" 
+          formControlName="phone"
+          placeholder="Telefon numaranızı girin"
+          styleClass="w-full"
+        />
+      </div>
+
+      <div class="field">
+        <label for="password">Şifre</label>
+        <p-password 
+          id="password"
+          formControlName="password"
+          placeholder="Şifrenizi girin"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+          [feedback]="true"
+          [toggleMask]="true"
+        />
+        <small 
+          class="p-error" 
+          *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+        >
+          Şifre en az 6 karakter olmalıdır
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Şifre Tekrar</label>
+        <p-password 
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          placeholder="Şifrenizi tekrar girin"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+          [feedback]="false"
+          [toggleMask]="true"
+        />
+        <small 
+          class="p-error" 
+          *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
+        >
+          Şifreler eşleşmiyor
+        </small>
+      </div>
+
+      <p-message 
+        *ngIf="errorMessage" 
+        severity="error" 
+        [text]="errorMessage"
+        styleClass="w-full mb-3"
+      />
+
+      <app-button 
+        type="submit"
+        label="Kayıt Ol"
+        styleClass="w-full"
+        [loading]="loading"
+        [disabled]="registerForm.invalid"
+      />
+
+      <div class="text-center mt-3">
+        <span>Zaten hesabınız var mı? </span>
+        <a routerLink="/auth/login" class="text-primary-500">Giriş Yap</a>
+      </div>
+    </form>
+  </app-card>
+</div>

@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.p-inputtext {
+  width: 100%;
+}
+
+:host(.w-full) .p-inputtext {
+  width: 100%;
+}
+
+.p-inputtext.p-component {
+  width: 100%;
+}
+
+.p-inputtext:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.p-inputtext:read-only {
+  background-color: var(--surface-100);
+}
+
+.p-inputtext.ng-invalid.ng-touched {
+  border-color: var(--red-500);
+}
+
+.p-inputtext.ng-valid.ng-touched {
+  border-color: var(--green-500);
+}

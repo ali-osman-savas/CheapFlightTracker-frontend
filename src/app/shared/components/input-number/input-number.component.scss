@@ -1,0 +1,22 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+::ng-deep {
+  .p-inputnumber-input {
+    width: 100%;
+  }
+  
+  .p-inputnumber {
+    width: 100%;
+  }
+  
+  .p-inputnumber-buttons-stacked .p-button {
+    width: 100%;
+  }
+  
+  .p-inputnumber-buttons-horizontal .p-inputnumber-input {
+    flex: 1;
+  }
+}

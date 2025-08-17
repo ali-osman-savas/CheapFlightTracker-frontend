@@ -1,0 +1,118 @@
+:host {
+  display: inline-block;
+}
+
+::ng-deep {
+  .p-button {
+    transition: all 0.3s ease;
+    
+    &:not(:disabled) {
+      cursor: pointer;
+      
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      }
+      
+      &:active {
+        transform: translateY(0);
+      }
+    }
+    
+    &.w-full {
+      width: 100%;
+    }
+    
+    &.mr-2 {
+      margin-right: 0.5rem;
+    }
+    
+    &.p-button-secondary {
+      background-color: var(--surface-200);
+      border-color: var(--surface-200);
+      color: var(--text-color);
+      
+      &:hover {
+        background-color: var(--surface-300);
+        border-color: var(--surface-300);
+      }
+    }
+    
+    &.p-button-success {
+      background-color: var(--green-500);
+      border-color: var(--green-500);
+    }
+    
+    &.p-button-info {
+      background-color: var(--blue-500);
+      border-color: var(--blue-500);
+    }
+    
+    &.p-button-warn {
+      background-color: var(--yellow-500);
+      border-color: var(--yellow-500);
+      color: var(--text-color-secondary);
+    }
+    
+    &.p-button-danger {
+      background-color: var(--red-500);
+      border-color: var(--red-500);
+    }
+    
+    &.p-button-text {
+      background-color: transparent;
+      border-color: transparent;
+      color: var(--primary-color);
+      
+      &:hover {
+        background-color: var(--primary-color-text);
+      }
+    }
+    
+    &.p-button-outlined {
+      background-color: transparent;
+      color: var(--primary-color);
+      border: 1px solid var(--primary-color);
+      
+      &:hover {
+        background-color: var(--primary-color);
+        color: var(--primary-color-text);
+      }
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    .p-button-loading-icon {
+      margin-right: 0.5rem;
+    }
+  }
+  
+  .p-button-icon-only {
+    padding: 0.75rem;
+    
+    .p-button-icon {
+      margin: 0;
+    }
+  }
+  
+  .p-button-small {
+    padding: 0.4375rem 0.875rem;
+    font-size: 0.875rem;
+    
+    .p-button-icon {
+      font-size: 0.875rem;
+    }
+  }
+  
+  .p-button-large {
+    padding: 0.9375rem 1.25rem;
+    font-size: 1.125rem;
+    
+    .p-button-icon {
+      font-size: 1.125rem;
+    }
+  }
+}

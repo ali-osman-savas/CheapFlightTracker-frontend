@@ -1,0 +1,33 @@
+<p-button 
+  [label]="label"
+  [icon]="icon"
+  [iconPos]="iconPos"
+  [styleClass]="styleClass"
+  [style]="style"
+  [disabled]="disabled"
+  [type]="type"
+  [severity]="severity"
+  [raised]="raised"
+  [rounded]="rounded"
+  [text]="text"
+  [outlined]="outlined"
+  [size]="size"
+  [plain]="plain"
+  [loading]="loading"
+  [loadingIcon]="loadingIcon"
+  [link]="link"
+  [tabindex]="tabindex"
+  [ariaLabel]="ariaLabel"
+  [badge]="badge"
+  [badgeClass]="badgeClass"
+  [attr.title]="tooltip"
+  (onClick)="onButtonClick($event)"
+  (onFocus)="onButtonFocus($event)"
+  (onBlur)="onButtonBlur($event)"
+>
+  <ng-template pTemplate="content" *ngIf="contentTemplate">
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+  </ng-template>
+  
+  <ng-content></ng-content>
+</p-button>

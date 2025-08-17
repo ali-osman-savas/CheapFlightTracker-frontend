@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import { DatePicker } from 'primeng/datepicker';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { MessageModule } from 'primeng/message';
@@ -12,6 +8,10 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ChartModule } from 'primeng/chart';
 import { FlightService } from '../../core/services/flight.service';
 import { FlightSearchRequest, FlightPrice, CheapestDay } from '../../core/models/flight.model';
+import { DatePickerComponent } from '../../shared/components/date-picker/date-picker.component';
+import { InputNumberComponent } from '../../shared/components/input-number/input-number.component';
+import { InputTextComponent } from '../../shared/components/input-text/input-text.component';
+import { CardComponent } from '../../shared/components/card/card.component';
 
 @Component({
   selector: 'app-flight-search',
@@ -19,227 +19,18 @@ import { FlightSearchRequest, FlightPrice, CheapestDay } from '../../core/models
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CardModule,
-    InputTextModule,
-    DatePicker,
-    InputNumberModule,
+    CardComponent,
+    InputTextComponent,
+    DatePickerComponent,
+    InputNumberComponent,
     ButtonModule,
     TableModule,
     MessageModule,
     ProgressSpinnerModule,
     ChartModule
   ],
-  template: `
-    <div class="container">
-      <h1 class="page-title">Uçuş Arama</h1>
-      
-      <p-card header="Uçuş Ara" class="search-card">
-        <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
-          <div class="grid">
-            <div class="col-12 md:col-6">
-              <div class="field">
-                <label for="origin">Nereden</label>
-                <input 
-                  id="origin"
-                  type="text" 
-                  pInputText 
-                  formControlName="origin"
-                  placeholder="Kalkış şehri (örn: IST)"
-                  class="w-full"
-                />
-              </div>
-            </div>
-            
-            <div class="col-12 md:col-6">
-              <div class="field">
-                <label for="destination">Nereye</label>
-                <input 
-                  id="destination"
-                  type="text" 
-                  pInputText 
-                  formControlName="destination"
-                  placeholder="Varış şehri (örn: AMS)"
-                  class="w-full"
-                />
-              </div>
-            </div>
-            
-            <div class="col-12 md:col-6">
-              <div class="field">
-                <label for="startDate">Başlangıç Tarihi</label>
-                <p-datepicker 
-                  id="startDate"
-                  formControlName="startDate"
-                  dateFormat="dd/mm/yy"
-                  placeholder="Tarih seçin"
-                  styleClass="w-full"
-                  inputStyleClass="w-full"
-                />
-              </div>
-            </div>
-            
-            <div class="col-12 md:col-6">
-              <div class="field">
-                <label for="endDate">Bitiş Tarihi</label>
-                <p-datepicker 
-                  id="endDate"
-                  formControlName="endDate"
-                  dateFormat="dd/mm/yy"
-                  placeholder="Tarih seçin"
-                  styleClass="w-full"
-                  inputStyleClass="w-full"
-                />
-              </div>
-            </div>
-            
-            <div class="col-12 md:col-6">
-              <div class="field">
-                <label for="maxPrice">Maksimum Fiyat (TL)</label>
-                <p-inputNumber 
-                  id="maxPrice"
-                  formControlName="maxPrice"
-                  placeholder="Fiyat limiti"
-                  styleClass="w-full"
-                  inputStyleClass="w-full"
-                  [min]="0"
-                  currency="TRY"
-                  mode="currency"
-                />
-              </div>
-            </div>
-            
-            <div class="col-12 md:col-6">
-              <div class="field">
-                <label for="limit">Sonuç Sayısı</label>
-                <p-inputNumber 
-                  id="limit"
-                  formControlName="limit"
-                  placeholder="Kaç sonuç"
-                  styleClass="w-full"
-                  inputStyleClass="w-full"
-                  [min]="1"
-                  [max]="100"
-                />
-              </div>
-            </div>
-          </div>
-          
-          <div class="search-actions">
-            <p-button 
-              type="submit"
-              label="Uçuş Ara"
-              icon="pi pi-search"
-              [loading]="loading"
-              [disabled]="searchForm.invalid"
-              styleClass="mr-2"
-            />
-            <p-button 
-              type="button"
-              label="En Ucuz Günler"
-              icon="pi pi-chart-line"
-              severity="secondary"
-              [loading]="loadingCheapest"
-              [disabled]="!searchForm.get('origin')?.value || !searchForm.get('destination')?.value"
-              (click)="getCheapestDays()"
-            />
-          </div>
-        </form>
-      </p-card>
-
-      <!-- Search Results -->
-      <p-card *ngIf="searchResults.length > 0" header="Arama Sonuçları" class="results-card">
-        <p-table [value]="searchResults" [paginator]="true" [rows]="10">
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Fiyat</th>
-              <th>Tarih</th>
-              <th>Rota</th>
-              <th>Sağlayıcı</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-flight>
-            <tr>
-              <td>
-                <span class="price">{{ flight.price | currency:'TRY':'symbol':'1.0-0' }}</span>
-              </td>
-              <td>{{ flight.departureDate | date:'dd/MM/yyyy' }}</td>
-              <td>{{ flight.route.origin }} → {{ flight.route.destination }}</td>
-              <td>{{ flight.provider.name }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </p-card>
-
-      <!-- Cheapest Days Chart -->
-      <p-card *ngIf="cheapestDaysData" header="En Ucuz Günler" class="chart-card">
-        <p-chart type="line" [data]="cheapestDaysData" [options]="chartOptions"></p-chart>
-      </p-card>
-
-      <!-- Loading -->
-      <div *ngIf="loading || loadingCheapest" class="loading-container">
-        <p-progressSpinner></p-progressSpinner>
-      </div>
-
-      <!-- Error Message -->
-      <p-message 
-        *ngIf="errorMessage" 
-        severity="error" 
-        [text]="errorMessage"
-        styleClass="w-full mt-3"
-      />
-    </div>
-  `,
-  styles: [`
-    .page-title {
-      text-align: center;
-      margin-bottom: 2rem;
-      color: var(--primary-color);
-    }
-
-    .search-card, .results-card, .chart-card {
-      margin-bottom: 2rem;
-    }
-
-    .field {
-      margin-bottom: 1rem;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-
-    .search-actions {
-      display: flex;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .price {
-      font-weight: bold;
-      color: var(--green-500);
-      font-size: 1.1rem;
-    }
-
-    .loading-container {
-      display: flex;
-      justify-content: center;
-      padding: 2rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-    }
-
-    @media (min-width: 768px) {
-      .grid .col-12.md\\:col-6 {
-        grid-column: span 1;
-      }
-    }
-  `]
+  templateUrl: './flight-search.component.html',
+  styleUrls: ['./flight-search.component.scss']
 })
 export class FlightSearchComponent implements OnInit {
   searchForm: FormGroup;

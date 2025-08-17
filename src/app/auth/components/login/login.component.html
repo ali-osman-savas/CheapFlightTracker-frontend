@@ -1,0 +1,62 @@
+<div class="login-container">
+  <app-card header="Giriş Yap" styleClass="login-card">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="email">Email</label>
+        <app-input-text 
+          id="email"
+          type="email" 
+          formControlName="email"
+          placeholder="Email adresinizi girin"
+          styleClass="w-full"
+          [class.ng-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+        />
+        <small 
+          class="p-error" 
+          *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+        >
+          Geçerli bir email adresi girin
+        </small>
+      </div>
+
+      <div class="field">
+        <label for="password">Şifre</label>
+        <p-password 
+          id="password"
+          formControlName="password"
+          placeholder="Şifrenizi girin"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+          [feedback]="false"
+          [toggleMask]="true"
+        />
+        <small 
+          class="p-error" 
+          *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+        >
+          Şifre gereklidir
+        </small>
+      </div>
+
+      <p-message 
+        *ngIf="errorMessage" 
+        severity="error" 
+        [text]="errorMessage"
+        styleClass="w-full mb-3"
+      />
+
+      <app-button 
+        type="submit"
+        label="Giriş Yap"
+        styleClass="w-full"
+        [loading]="loading"
+        [disabled]="loginForm.invalid"
+      />
+
+      <div class="text-center mt-3">
+        <span>Hesabınız yok mu? </span>
+        <a routerLink="/auth/register" class="text-primary-500">Kayıt Ol</a>
+      </div>
+    </form>
+  </app-card>
+</div>
